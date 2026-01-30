@@ -103,12 +103,14 @@
 - 프로젝트 루트에서 실행한다: `C:\Users\lsy\[프로젝트명]`
 - **공통 의존성** (CLAUDE.md의 "공통 의존성 > 필수 의존성" 목록):
   ```
-  npx expo install @supabase/supabase-js react-native-paper react-native-safe-area-context react-native-vector-icons zustand react-native-mmkv expo-router expo-linking expo-constants expo-status-bar expo-splash-screen expo-secure-store
+  npx expo install @supabase/supabase-js react-native-paper react-native-safe-area-context zustand react-native-mmkv react-native-nitro-modules expo-router expo-linking expo-constants @expo/metro-runtime react-native-screens react-native-reanimated react-native-gesture-handler expo-status-bar expo-splash-screen expo-secure-store expo-font expo-system-ui expo-dev-client
   ```
 - **조건부 의존성** (2단계에서 식별된 기술에 대응하는 패키지만):
-  - CLAUDE.md의 "조건부 의존성 매핑" 테이블에서 패키지명을 찾아 설치한다.
+  - CLAUDE.md의 "조건부 의존성 매핑" 테이블에서 패키지명과 **함께 설치할 피어**를 모두 찾아 설치한다.
+  - 예: `Chart (Gifted Charts)` → `npx expo install react-native-gifted-charts react-native-svg`
+  - 예: `Analytics (Firebase)` → `npx expo install @react-native-firebase/app @react-native-firebase/analytics`
   ```
-  npx expo install [조건부 패키지1] [조건부 패키지2] ...
+  npx expo install [조건부 패키지 + 피어 패키지]
   ```
 - **개발 의존성** (CLAUDE.md의 "공통 의존성 > 필수 개발 의존성" 목록):
   ```

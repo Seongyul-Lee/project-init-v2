@@ -67,55 +67,114 @@ PRD Section 5의 P0 기능 목록에 따라 `src/components/` 하위에 기능�
 ---
 
 ## 공통 의존성
-모든 프로젝트에 설치하는 패키지.
+모든 프로젝트에 설치하는 패키지. `npx expo install`로 설치하여 SDK 호환 버전을 자동 맞춘다.
 
 ### 필수 의존성 (dependencies)
-```
-@supabase/supabase-js
-react-native-paper
-react-native-safe-area-context
-react-native-vector-icons
-zustand
-react-native-mmkv
-expo-router
-expo-linking
-expo-constants
-expo-status-bar
-expo-splash-screen
-expo-secure-store
+
+| 패키지명 | 용도 | 비고 |
+|---|---|---|
+| `@supabase/supabase-js` | Supabase 클라이언트 | 순수 JS, 네이티브 코드 없음 |
+| `react-native-paper` | Material Design UI 컴포넌트 | 피어: `react-native-safe-area-context` |
+| `react-native-safe-area-context` | Safe Area 처리 | expo-router, react-native-paper 공통 피어 |
+| `zustand` | 전역 상태 관리 | 순수 JS |
+| `react-native-mmkv` | 로컬 키-값 저장소 | 피어: `react-native-nitro-modules` (v4+) |
+| `react-native-nitro-modules` | MMKV v4+ 필수 피어 | react-native-mmkv와 함께 설치 |
+| `expo-router` | 파일 기반 라우팅 | 피어 다수 (아래 참조) |
+| `expo-linking` | 딥링크 처리 | expo-router 필수 피어 |
+| `expo-constants` | 앱 상수 접근 | expo-router 필수 피어 |
+| `@expo/metro-runtime` | Metro 번들러 런타임 | expo-router 필수 피어 |
+| `react-native-screens` | 네이티브 화면 스택 | expo-router 필수 피어 |
+| `react-native-reanimated` | 고성능 애니메이션 | expo-router 전환 애니메이션, 범용 사용 |
+| `react-native-gesture-handler` | 제스처 처리 | 내비게이션 제스처, 스와이프 등 |
+| `expo-status-bar` | 상태바 제어 | |
+| `expo-splash-screen` | 스플래시 화면 제어 | |
+| `expo-secure-store` | 보안 저장소 (토큰 등) | Supabase 세션 저장에 사용 |
+| `expo-font` | 커스텀 폰트 로딩 | `@expo/vector-icons` 피어 |
+| `expo-system-ui` | 시스템 UI 제어 (루트 배경색) | 다크모드 화면 깜빡임 방지 |
+| `expo-dev-client` | 개발 빌드 클라이언트 | 네이티브 모듈 사용 시 필수 (MMKV 등) |
+
+> **참고**: `@expo/vector-icons`는 `expo` 패키지에 기본 포함되어 있어 별도 설치 불필요.
+> `react-native-vector-icons`는 Expo Managed Workflow에서 사용하지 않는다.
+
+### 설치 명령어
+```bash
+npx expo install @supabase/supabase-js react-native-paper react-native-safe-area-context zustand react-native-mmkv react-native-nitro-modules expo-router expo-linking expo-constants @expo/metro-runtime react-native-screens react-native-reanimated react-native-gesture-handler expo-status-bar expo-splash-screen expo-secure-store expo-font expo-system-ui expo-dev-client
 ```
 
 ### 필수 개발 의존성 (devDependencies)
-```
-@types/react
-typescript
+```bash
+npm install -D @types/react typescript
 ```
 
 ---
 
 ## 조건부 의존성 매핑
 PRD Section 7-1에 아래 기술이 명시된 경우에만 추가 설치한다.
+모든 패키지는 `npx expo install`로 설치한다.
 
-| PRD 기술명 | npm 패키지명 | 용도 |
-|---|---|---|
-| op-sqlite | `@op-engineering/op-sqlite` | 구조화 로컬 DB |
-| WatermelonDB | `@nozbe/watermelondb` | 오프라인 퍼스트 DB |
-| Kakao OAuth | `@react-native-seoul/kakao-login` | 카카오 로그인 |
-| Google OAuth | `@react-native-google-signin/google-signin` | 구글 로그인 |
-| Apple Auth | `expo-apple-authentication` | 애플 로그인 |
-| Push Notification | `expo-notifications` | 푸시 알림 |
-| Analytics (Firebase) | `expo-firebase-analytics` | Firebase 분석 |
-| Analytics (Aptabase) | `@aptabase/react-native` | 프라이버시 중심 분석 |
-| In-App Purchase | `react-native-iap` | 인앱 결제 |
-| Chart/Graph (Gifted) | `react-native-gifted-charts` | 차트 시각화 |
-| Chart/Graph (Victory) | `victory-native` | 차트 시각화 |
-| Calendar | `react-native-calendars` | 캘린더 UI |
-| Image Picker | `expo-image-picker` | 이미지 선택 |
-| Camera | `expo-camera` | 카메라 |
-| Haptics | `expo-haptics` | 햅틱 피드백 |
-| Lottie | `lottie-react-native` | 애니메이션 |
-| DateTimePicker | `@react-native-community/datetimepicker` | 날짜/시간 선택 |
-| AsyncStorage | `@react-native-async-storage/async-storage` | 비동기 키-값 저장소 |
+### 로컬 DB / 오프라인
+
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
+|---|---|---|---|
+| op-sqlite | `@op-engineering/op-sqlite` | — | dev build 필요. `expo-updates`와 SQLite 충돌 가능, 주의 |
+| WatermelonDB | `@nozbe/watermelondb` | — | RN 0.76+ 호환 이슈 있음. Expo용 커뮤니티 플러그인 필요: `@lovesworking/watermelondb-expo-plugin-sdk-52-plus` |
+| AsyncStorage | `@react-native-async-storage/async-storage` | — | MMKV보다 느림. 레거시 호환 필요 시만 사용 |
+
+### 인증
+
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
+|---|---|---|---|
+| Kakao OAuth | `@react-native-seoul/kakao-login` | — | dev build 필요 |
+| Google OAuth | `@react-native-google-signin/google-signin` | — | Expo config plugin 내장. dev build 필요 |
+| Apple Auth | `expo-apple-authentication` | — | iOS 전용 |
+
+### 알림
+
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
+|---|---|---|---|
+| Push Notification | `expo-notifications` | — | 푸시 기능은 dev build 필요 |
+
+### 분석
+
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
+|---|---|---|---|
+| Analytics (Firebase) | `@react-native-firebase/analytics` | `@react-native-firebase/app` (동일 버전) | `expo-firebase-analytics`는 **폐기됨**. dev build 필요, app.json config plugin 설정 필요 |
+| Analytics (Aptabase) | `@aptabase/react-native` | — | 순수 JS. 최신 버전(v0.4+)은 React 19/RN 0.81+ 요구 — Expo SDK 버전에 맞는 호환 버전 확인 필요 |
+
+### 결제
+
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
+|---|---|---|---|
+| In-App Purchase | `react-native-iap` | `react-native-nitro-modules` | dev build 필요. Expo config plugin 내장 |
+
+### 차트 / 시각화
+
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
+|---|---|---|---|
+| Chart (Gifted Charts) | `react-native-gifted-charts` | `react-native-svg` | SVG 기반. 그래디언트 사용 시 `expo-linear-gradient` 추가 |
+| Chart (Victory Native) | `victory-native` | `@shopify/react-native-skia`, `react-native-reanimated`, `react-native-gesture-handler` | Skia 기반 (SVG 아님). dev build 필요 |
+
+### UI 컴포넌트
+
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
+|---|---|---|---|
+| Calendar | `react-native-calendars` | — | 주로 JS 기반 |
+| DateTimePicker | `@react-native-community/datetimepicker` | — | Expo 공식 지원, config plugin 내장 |
+| SVG | `react-native-svg` | — | 차트/아이콘 라이브러리의 공통 피어 |
+
+### 미디어 / 디바이스
+
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
+|---|---|---|---|
+| Image Picker | `expo-image-picker` | — | |
+| Camera | `expo-camera` | — | dev build 필요 |
+| Haptics | `expo-haptics` | — | |
+
+### 애니메이션
+
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
+|---|---|---|---|
+| Lottie | `lottie-react-native` | — | dev build 필요. `npx expo install`로 호환 버전 설치 |
 
 ---
 
