@@ -12,11 +12,14 @@ app-idea-lab에서 채택(adopted)된 PRD 문서를 기반으로, React Native +
 /init-docs NNN-아이디어명 프로젝트명      →  CLAUDE.md + KNOWLEDGE.md 생성 + Git 초기화
 ```
 
+## 연관 프로젝트: app-idea-lab
+본 프로젝트는 `~/app-idea-lab`의 채택된 PRD를 입력으로 사용한다. app-idea-lab의 기술 스택 제약, 개발 환경, PRD 구조가 변경되면 본 프로젝트의 대응 섹션(기술 스택, 경로 상수, 의존성 매핑, 템플릿 골격)도 함께 수정해야 한다. 동기화 대상 상세는 app-idea-lab CLAUDE.md의 "연관 프로젝트: project-init" 섹션을 참조.
+
 ## 경로 상수
-- **app-idea-lab 경로**: `C:\Users\lsy\app-idea-lab`
-- **PRD 파일 위치**: `C:\Users\lsy\app-idea-lab\ideas\adopted\NNN-*-prd.md`
-- **프로젝트 생성 기본 경로**: `C:\Users\lsy\`
-- **커맨드 템플릿 경로**: `C:\Users\lsy\project-init\templates\commands\`
+- **app-idea-lab 경로**: `~/app-idea-lab`
+- **PRD 파일 위치**: `~/app-idea-lab/ideas/adopted/NNN-*-prd.md`
+- **프로젝트 생성 기본 경로**: `~/`
+- **커맨드 템플릿 경로**: `~/project-init/templates/commands/`
 
 ---
 
@@ -366,7 +369,7 @@ init-docs 스킬이 새 프로젝트에 생성하는 KNOWLEDGE.md의 구조.
 P0/P1 기능 목록과 각 기능의 한 줄 설명. AC 번호 참조.
 
 ## 핵심 용어 사전
-← PRD 전반에서 추출.
+← PRD Section 16 (Glossary)에서 추출.
 도메인 특화 용어와 정의 (예: "체크인" = 일일 루틴 완료 기록).
 
 ## 수익 모델

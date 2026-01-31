@@ -15,14 +15,14 @@
 - `$ARGUMENTS`에서 두 인자를 분리한다.
   - 첫 번째: `NNN-아이디어명` (예: `001-데일리셀프`)
   - 두 번째: `프로젝트명` (예: `dailyself-app`)
-- 프로젝트 경로: `C:\Users\lsy\[프로젝트명]`
+- 프로젝트 경로: `~/[프로젝트명]`
 - 프로젝트 디렉토리가 존재하는지, `package.json`이 있는지 확인한다.
   - 없으면 `/init-scaffold`를 먼저 실행하라고 안내하고 중단.
 - 인자가 2개가 아니면 사용 예시를 보여주고 중단한다.
 
 ### 2단계: PRD 읽기 (선별 섹션)
 - PRD 파일을 찾는다:
-  - 경로: `C:\Users\lsy\app-idea-lab\ideas\adopted\`
+  - 경로: `~/app-idea-lab/ideas/adopted/`
   - 파일명 패턴: `NNN-*-prd.md` (예: `001-데일리셀프-prd.md`)
   - 해당 패턴의 파일이 없으면 사용자에게 정확한 파일명을 확인하고 중단한다.
 - **아래 섹션만 순서대로 읽는다.** PRD 전체를 읽지 않는다.
@@ -44,6 +44,7 @@
 | 8 | Section 10 (Monetization Strategy) | — | 수익 모델 |
 | 9 | Section 12 (Assumptions & Constraints) | 제약사항 | — |
 | 10 | Section 15 (Success Metrics) | — | 성공 지표 |
+| 11 | Section 16 (Glossary) | — | 핵심 용어 사전 |
 
 > **참고**: Section 7-2 (시스템 구조도), 7-8 (기능-테이블-API 매핑), 7-9 (자체 점검 결과)는 CLAUDE.md에 요약하지 않는다. PRD 참조 섹션에서 원문 경로로 안내한다.
 
@@ -51,7 +52,7 @@
 - PRD에 해당 섹션이 없으면 기록해두고, 생성할 문서에서 해당 항목에 `[PRD에 미포함 — 수동 작성 필요]`로 표시한다.
 
 ### 3단계: CLAUDE.md 생성
-- 파일 경로: `C:\Users\lsy\[프로젝트명]\CLAUDE.md`
+- 파일 경로: `~/[프로젝트명]/CLAUDE.md`
 - **project-init CLAUDE.md의 "생성할 CLAUDE.md 골격" 섹션을 구조 템플릿으로 사용한다.**
 - PRD 내용을 그대로 복사하지 않는다. 개발 시 Claude가 참조할 지침으로 재구성한다.
 
@@ -133,7 +134,7 @@
 - 형식:
   ```markdown
   ## PRD 참조
-  - **PRD 원문**: `C:\Users\lsy\app-idea-lab\ideas\adopted\NNN-아이디어명-prd.md`
+  - **PRD 원문**: `~/app-idea-lab/ideas/adopted/NNN-아이디어명-prd.md`
   - 시스템 구조도: Section 7-2
   - 기능-테이블-API 매핑: Section 7-8
   - 상세 DB 스키마 (CREATE TABLE): Section 7-5
@@ -143,7 +144,7 @@
 - `NNN-아이디어명` 부분은 1단계에서 파싱한 인자와 실제 발견된 PRD 파일명을 사용한다.
 
 ### 4단계: KNOWLEDGE.md 생성
-- 파일 경로: `C:\Users\lsy\[프로젝트명]\KNOWLEDGE.md`
+- 파일 경로: `~/[프로젝트명]/KNOWLEDGE.md`
 - **project-init CLAUDE.md의 "생성할 KNOWLEDGE.md 골격" 섹션을 구조 템플릿으로 사용한다.**
 - 비즈니스 맥락과 사용자 관점 위주로 작성한다. 기술 구현 세부사항은 CLAUDE.md에 있으므로 중복하지 않는다.
 
@@ -164,7 +165,7 @@
 - AC(수용 기준) 번호를 참조로 기록한다 (예: "AC-01-1 ~ AC-01-3 참조").
 
 **핵심 용어 사전**
-- PRD 전반에서 도메인 특화 용어를 추출한다.
+- PRD Section 16에서 추출한다.
 - 형식: `용어` — 정의
 - 예: `체크인` — 사용자가 일일 루틴 수행을 기록하는 행위
 
@@ -181,7 +182,7 @@
 - MVP 단계 핵심 KPI 3~5개와 목표 수치.
 
 ### 5단계: Git 초기화
-- 프로젝트 디렉토리에서 실행한다: `C:\Users\lsy\[프로젝트명]`
+- 프로젝트 디렉토리에서 실행한다: `~/[프로젝트명]`
 - Git이 이미 초기화되어 있지 않은 경우에만 `git init`을 실행한다.
 - 전체 파일을 스테이징하고 초기 커밋한다:
   ```
