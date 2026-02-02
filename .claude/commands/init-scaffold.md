@@ -21,7 +21,7 @@
 ### 2단계: PRD 읽기 (Section 7-1만)
 - PRD 파일을 찾는다:
   - 경로: `~/app-idea-lab/ideas/adopted/`
-  - 파일명 패턴: `NNN-*-prd.md` (예: `001-데일리셀프-prd.md`)
+  - 파일명 패턴: `NNN-아이디어명-prd.md` (예: `001-데일리셀프-prd.md`)
   - 해당 패턴의 파일이 없으면 사용자에게 정확한 파일명을 확인하고 중단한다.
 - PRD 파일에서 **Section 7-1 (기술 스택)만** 읽는다.
   - `## 7-1.` 또는 `### 7-1.` 헤딩부터 `## 7-2.` 또는 `### 7-2.` 헤딩 직전까지.
@@ -119,8 +119,8 @@
   ```
 - **조건부 의존성** (2단계에서 식별된 기술에 대응하는 패키지만):
   - CLAUDE.md의 "조건부 의존성 매핑" 테이블에서 패키지명과 **함께 설치할 피어**를 모두 찾아 설치한다.
-  - 예: `Chart (Gifted Charts)` → `npx expo install react-native-gifted-charts react-native-svg`
-  - 예: `Analytics (Firebase)` → `npx expo install @react-native-firebase/app @react-native-firebase/analytics`
+  - 예: `Gifted Charts (SVG 기반)` → `npx expo install react-native-gifted-charts react-native-svg`
+  - 예: `Firebase Analytics` → `npx expo install @react-native-firebase/app @react-native-firebase/analytics`
   ```
   npx expo install [조건부 패키지 + 피어 패키지]
   ```

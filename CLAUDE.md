@@ -17,7 +17,7 @@ app-idea-lab에서 채택(adopted)된 PRD 문서를 기반으로, React Native +
 
 ## 경로 상수
 - **app-idea-lab 경로**: `~/app-idea-lab`
-- **PRD 파일 위치**: `~/app-idea-lab/ideas/adopted/NNN-*-prd.md`
+- **PRD 파일 위치**: `~/app-idea-lab/ideas/adopted/NNN-아이디어명-prd.md`
 - **프로젝트 생성 기본 경로**: `~/`
 - **커맨드 템플릿 경로**: `~/project-init/templates/commands/`
 
@@ -30,7 +30,17 @@ app-idea-lab에서 채택(adopted)된 PRD 문서를 기반으로, React Native +
 - **UI**: React Native Paper
 - **상태 관리**: Zustand
 - **백엔드**: Supabase (PostgreSQL + Auth + Edge Functions + Storage)
-- **로컬 저장소**: react-native-mmkv (경량 키-값), op-sqlite (구조화 데이터, 필요 시)
+- **로컬 KV**: react-native-mmkv (경량 키-값)
+- **로컬 DB (필요 시)**: op-sqlite (구조화 데이터, PRD에서 명시한 경우 조건부 설치)
+
+## 타겟 플랫폼
+- iOS / Android 모두 배포
+
+## 개발 환경
+- OS: Windows 11
+- 개발·디버깅: Android 에뮬레이터 + Expo DevTools + Chrome Remote Debugger
+- iOS 빌드: EAS Build (클라우드)
+- iOS 검증: 배포 전 실기기로 최종 검증
 
 ---
 
@@ -125,8 +135,6 @@ PRD Section 7-1에 아래 기술이 명시된 경우에만 추가 설치한다.
 | PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
 |---|---|---|---|
 | op-sqlite | `@op-engineering/op-sqlite` | — | dev build 필요. `expo-updates`와 SQLite 충돌 가능, 주의 |
-| WatermelonDB | `@nozbe/watermelondb` | — | RN 0.76+ 호환 이슈 있음. Expo용 커뮤니티 플러그인 필요: `@lovesworking/watermelondb-expo-plugin-sdk-52-plus` |
-| AsyncStorage | `@react-native-async-storage/async-storage` | — | MMKV보다 느림. 레거시 호환 필요 시만 사용 |
 
 ### 인증
 
@@ -141,44 +149,44 @@ PRD Section 7-1에 아래 기술이 명시된 경우에만 추가 설치한다.
 
 | PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
 |---|---|---|---|
-| Push Notification | `expo-notifications` | — | 푸시 기능은 dev build 필요 |
+| expo-notifications | `expo-notifications` | — | 푸시 기능은 dev build 필요 |
 
 ### 분석
 
 | PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
 |---|---|---|---|
-| Analytics (Firebase) | `@react-native-firebase/analytics` | `@react-native-firebase/app` (동일 버전) | `expo-firebase-analytics`는 **폐기됨**. dev build 필요, app.json config plugin 설정 필요 |
-| Analytics (Aptabase) | `@aptabase/react-native` | — | 순수 JS. 최신 버전(v0.4+)은 React 19/RN 0.81+ 요구 — Expo SDK 버전에 맞는 호환 버전 확인 필요 |
+| Firebase Analytics | `@react-native-firebase/analytics` | `@react-native-firebase/app` (동일 버전) | `expo-firebase-analytics`는 **폐기됨**. dev build 필요, app.json config plugin 설정 필요 |
+| Aptabase | `@aptabase/react-native` | — | 순수 JS. 최신 버전(v0.4+)은 React 19/RN 0.81+ 요구 — Expo SDK 버전에 맞는 호환 버전 확인 필요 |
 
 ### 결제
 
 | PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
 |---|---|---|---|
-| In-App Purchase | `react-native-iap` | `react-native-nitro-modules` | dev build 필요. Expo config plugin 내장 |
+| react-native-iap | `react-native-iap` | `react-native-nitro-modules` | dev build 필요. Expo config plugin 내장 |
 | RevenueCat | `react-native-purchases` | — | IAP 래퍼. dev build 필요 |
 
 ### 차트 / 시각화
 
 | PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
 |---|---|---|---|
-| Chart (Gifted Charts) | `react-native-gifted-charts` | `react-native-svg` | SVG 기반. 그래디언트 사용 시 `expo-linear-gradient` 추가 |
-| Chart (Victory Native) | `victory-native` | `@shopify/react-native-skia`, `react-native-reanimated`, `react-native-gesture-handler` | Skia 기반 (SVG 아님). dev build 필요 |
+| Gifted Charts (SVG 기반) | `react-native-gifted-charts` | `react-native-svg` | 그래디언트 사용 시 `expo-linear-gradient` 추가 |
+| Victory Native (Skia 기반) | `victory-native` | `@shopify/react-native-skia`, `react-native-reanimated`, `react-native-gesture-handler` | dev build 필요 |
 
 ### UI 컴포넌트
 
 | PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
 |---|---|---|---|
-| Calendar | `react-native-calendars` | — | 주로 JS 기반 |
+| react-native-calendars | `react-native-calendars` | — | 주로 JS 기반 |
 | DateTimePicker | `@react-native-community/datetimepicker` | — | Expo 공식 지원, config plugin 내장 |
-| SVG | `react-native-svg` | — | 차트/아이콘 라이브러리의 공통 피어 |
+| react-native-svg | `react-native-svg` | — | 차트/아이콘 라이브러리의 공통 피어 |
 
 ### 미디어 / 디바이스
 
 | PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
 |---|---|---|---|
-| Image Picker | `expo-image-picker` | — | |
-| Camera | `expo-camera` | — | dev build 필요 |
-| Haptics | `expo-haptics` | — | |
+| expo-image-picker | `expo-image-picker` | — | |
+| expo-camera | `expo-camera` | — | dev build 필요 |
+| expo-haptics | `expo-haptics` | — | |
 
 ### 애니메이션
 
