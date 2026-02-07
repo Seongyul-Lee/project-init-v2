@@ -13,7 +13,29 @@ app-idea-lab-v2에서 채택(adopted)된 PRD 문서를 기반으로, React Nativ
 ```
 
 ## 연관 프로젝트: app-idea-lab-v2
-본 프로젝트는 `~/app-idea-lab-v2`의 채택된 PRD를 입력으로 사용한다. app-idea-lab-v2의 기술 스택 제약, 개발 환경, PRD 구조가 변경되면 본 프로젝트의 대응 섹션(기술 스택, 경로 상수, 의존성 매핑, 템플릿 골격)도 함께 수정해야 한다. 동기화 대상 상세는 app-idea-lab-v2 CLAUDE.md의 "연관 프로젝트: project-init-v2" 섹션을 참조.
+
+### 전체 파이프라인에서의 위치
+본 프로젝트는 app-idea-lab-v2의 8단계 파이프라인 중 **Stage 4(채택) → MVP 개발** 사이에 위치한다.
+
+```
+Stage 1 → Stage 1V → Stage 2 → Stage 3 → Stage 4 (채택)
+                                                    ↓
+                                            ★ project-init-v2 ★
+                                            /init-scaffold → /init-docs
+                                                    ↓
+                                              MVP 개발
+                                                    ↓
+                                            Stage 5 (출시) → Stage 6 (성장)
+                                                    ↓
+                                            /monthly-review (매월)
+```
+
+### 입력과 출력
+- **입력**: `~/app-idea-lab-v2/ideas/adopted/NNN-아이디어명-prd.md` (Stage 4 채택 PRD)
+- **출력**: 개발 착수 가능한 Expo + Supabase 프로젝트 (CLAUDE.md, KNOWLEDGE.md 포함)
+
+### 동기화 규칙
+app-idea-lab-v2의 기술 스택 제약, 개발 환경, PRD 구조가 변경되면 본 프로젝트의 대응 섹션(기술 스택, 경로 상수, 의존성 매핑, 템플릿 골격)도 함께 수정해야 한다. 동기화 대상 상세는 app-idea-lab-v2 CLAUDE.md의 "연관 프로젝트: project-init-v2" 섹션을 참조.
 
 ## 경로 상수
 - **app-idea-lab-v2 경로**: `~/app-idea-lab-v2`
@@ -67,8 +89,6 @@ Expo Router 기반 React Native + Supabase 프로젝트의 기본 구조. init-s
 │   └── assets/                # 이미지, 폰트 등 정적 리소스
 ├── .claude/
 │   └── commands/              # Claude Code 커스텀 명령어 (next, plan)
-├── docs/
-│   └── plans/                 # 구현 계획 문서 (/plan 명령어 산출물)
 ├── supabase/
 │   ├── migrations/            # DB 마이그레이션 SQL 파일
 │   └── functions/             # Supabase Edge Functions
@@ -206,6 +226,12 @@ init-docs 스킬이 새 프로젝트에 생성하는 CLAUDE.md의 구조. 각 �
 ← PRD Section 1 (Executive Summary)에서 추출.
 한 문단으로 프로젝트의 핵심 가치와 목표를 서술.
 
+## 라이프사이클 위치
+이 프로젝트는 app-idea-lab-v2 파이프라인의 Stage 4를 통과하여 채택된 아이디어다.
+- PRD 원본: `~/app-idea-lab-v2/ideas/adopted/NNN-아이디어명-prd.md`
+- 검증 보고서: `~/app-idea-lab-v2/validation/NNN-아이디어명-validation.md` (있는 경우)
+- 현재 단계: MVP 개발 → 완료 후 `/stage-5` (출시), `/stage-6` (성장) 진행
+
 ## 기술 스택
 ← PRD Section 7-1에서 추출.
 레이어별(프론트엔드/상태관리/로컬저장소/백엔드/인증/결제/분석/빌드) 기술 선택과 선택 근거.
@@ -223,12 +249,22 @@ init-docs 스킬이 새 프로젝트에 생성하는 CLAUDE.md의 구조. 각 �
 
 | 단계 | 행동 | 비고 |
 |---|---|---|
-| 1 | 다음 태스크 확인 | `/next` 또는 Task Master 직접 조회 |
-| 2 | 계획 수립 (복잡한 작업 시) | `/plan [기능명]` |
-| 3 | 외부 라이브러리 문서 조회 | Context7 활용 |
+| 1 | 다음 태스크 확인 | `/next` → PRD 섹션 매핑 확인 |
+| 2 | 계획 수립 | `/plan id:N` 또는 `/plan [기능명]` |
+| 3 | 외부 라이브러리 문서 조회 | Context7 활용 (필요시) |
 | 4 | 구현 | — |
-| 5 | 검증 | lint + typecheck |
-| 6 | 태스크 완료 처리 | Task Master 상태 업데이트 |
+| 5 | 검증 | `npx tsc --noEmit` + lint |
+| 6 | 태스크 완료 처리 | Task Master 상태 → done |
+| 7 | KNOWLEDGE.md 검토 | 업데이트 필요 여부 확인 |
+
+### `/plan` 명령어
+
+| 형식 | 예시 | 동작 |
+|------|------|------|
+| `id:N` | `/plan id:2` | Task ID로 직접 조회 → PRD 참조 자동 추출 |
+| `[기능명]` | `/plan Supabase DB 스키마` | title/description 매칭 → PRD 참조 자동 추출 |
+
+- tasks.json에서 관련 태스크 조회 → PRD 섹션 확인 → Plan Mode 진입
 
 ## 코딩 컨벤션
 
@@ -269,14 +305,6 @@ Zustand 스토어 목록, 각 스토어의 역할과 주요 상태 필드.
 - [ ] 부작용 범위를 파악했는가?
 - [ ] `KNOWLEDGE.md`에서 유사 사례 확인했는가?
 
-**신뢰도 평가**
-
-| 신뢰도 | 행동 |
-|---|---|
-| ≥90% | 바로 진행 |
-| 70-89% | 대안 제시 후 조사 계속 |
-| <70% | 중단, 사용자에게 질문 |
-
 ### 사후 검증 (구현 후)
 
 **필수**: lint + typecheck 실행
@@ -294,14 +322,6 @@ Zustand 스토어 목록, 각 스토어의 역할과 주요 상태 필드.
 - [ ] 모든 요구사항 충족 (항목별 체크)
 - [ ] 검증되지 않은 가정 없음
 - [ ] `KNOWLEDGE.md` 업데이트 필요 여부 검토
-
-### 환각 위험 신호
-
-즉시 재검토 필요:
-- 증거 없이 "정상 작동" 주장
-- "아마도", "대부분" 같은 불확실한 언어
-- 테스트 실패 무시
-- 요약만 제공, 실제 출력 생략
 
 ### 커밋 규칙
 - 메시지: 한국어
@@ -388,7 +408,12 @@ P0/P1 기능 목록과 각 기능의 한 줄 설명. AC 번호 참조.
 ← PRD Section 9 (Competitive Differentiation)에서 추출.
 주요 경쟁 앱과 차별점 요약.
 
+## 시장 검증 요약
+← app-idea-lab-v2의 Stage 1V 검증 보고서에서 추출 (있는 경우).
+검증 점수, GO/CONDITIONAL/NO-GO 판정, 핵심 수요 신호 요약.
+
 ## 성공 지표
 ← PRD Section 15 (Success Metrics)에서 추출.
 MVP 단계 핵심 KPI.
+출시 후에는 app-idea-lab-v2의 /monthly-review에서 추적.
 ```
