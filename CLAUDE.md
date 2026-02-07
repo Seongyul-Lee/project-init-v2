@@ -1,7 +1,7 @@
-# Project Init
+# Project Init v2
 
 ## 목적
-app-idea-lab에서 채택(adopted)된 PRD 문서를 기반으로, React Native + Supabase 프로젝트를 자동 생성하고 초기화하는 워크플로우 도구.
+app-idea-lab-v2에서 채택(adopted)된 PRD 문서를 기반으로, React Native + Supabase 프로젝트를 자동 생성하고 초기화하는 워크플로우 도구.
 
 ## 프로젝트 역할
 이 프로젝트는 **코드 개발을 하지 않는다.** PRD 기반 프로젝트 초기화 자동화 스킬만 제공한다.
@@ -12,14 +12,14 @@ app-idea-lab에서 채택(adopted)된 PRD 문서를 기반으로, React Native +
 /init-docs NNN-아이디어명 프로젝트명      →  CLAUDE.md + KNOWLEDGE.md 생성 + Git 초기화
 ```
 
-## 연관 프로젝트: app-idea-lab
-본 프로젝트는 `~/app-idea-lab`의 채택된 PRD를 입력으로 사용한다. app-idea-lab의 기술 스택 제약, 개발 환경, PRD 구조가 변경되면 본 프로젝트의 대응 섹션(기술 스택, 경로 상수, 의존성 매핑, 템플릿 골격)도 함께 수정해야 한다. 동기화 대상 상세는 app-idea-lab CLAUDE.md의 "연관 프로젝트: project-init" 섹션을 참조.
+## 연관 프로젝트: app-idea-lab-v2
+본 프로젝트는 `~/app-idea-lab-v2`의 채택된 PRD를 입력으로 사용한다. app-idea-lab-v2의 기술 스택 제약, 개발 환경, PRD 구조가 변경되면 본 프로젝트의 대응 섹션(기술 스택, 경로 상수, 의존성 매핑, 템플릿 골격)도 함께 수정해야 한다. 동기화 대상 상세는 app-idea-lab-v2 CLAUDE.md의 "연관 프로젝트: project-init-v2" 섹션을 참조.
 
 ## 경로 상수
-- **app-idea-lab 경로**: `~/app-idea-lab`
-- **PRD 파일 위치**: `~/app-idea-lab/ideas/adopted/NNN-아이디어명-prd.md`
+- **app-idea-lab-v2 경로**: `~/app-idea-lab-v2`
+- **PRD 파일 위치**: `~/app-idea-lab-v2/ideas/adopted/NNN-아이디어명-prd.md`
 - **프로젝트 생성 기본 경로**: `~/`
-- **커맨드 템플릿 경로**: `~/project-init/templates/commands/`
+- **커맨드 템플릿 경로**: `~/project-init-v2/templates/commands/`
 
 ---
 

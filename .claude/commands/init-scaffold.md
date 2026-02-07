@@ -20,7 +20,7 @@
 
 ### 2단계: PRD 읽기 (Section 7-1만)
 - PRD 파일을 찾는다:
-  - 경로: `~/app-idea-lab/ideas/adopted/`
+  - 경로: `~/app-idea-lab-v2/ideas/adopted/`
   - 파일명 패턴: `NNN-아이디어명-prd.md` (예: `001-데일리셀프-prd.md`)
   - 해당 패턴의 파일이 없으면 사용자에게 정확한 파일명을 확인하고 중단한다.
 - PRD 파일에서 **Section 7-1 (기술 스택)만** 읽는다.
@@ -107,7 +107,7 @@
   .env
   .env.local
   ```
-- **커스텀 명령어 복사**: `~/project-init/templates/commands/` 디렉토리의 파일을 프로젝트의 `.claude/commands/`로 복사한다.
+- **커스텀 명령어 복사**: `~/project-init-v2/templates/commands/` 디렉토리의 파일을 프로젝트의 `.claude/commands/`로 복사한다.
   - `next.md` — Task Master 다음 작업 조회
   - `plan.md` — Plan Mode 진입 + 구현 계획 문서 생성
 

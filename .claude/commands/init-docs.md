@@ -22,7 +22,7 @@
 
 ### 2단계: PRD 읽기 (선별 섹션)
 - PRD 파일을 찾는다:
-  - 경로: `~/app-idea-lab/ideas/adopted/`
+  - 경로: `~/app-idea-lab-v2/ideas/adopted/`
   - 파일명 패턴: `NNN-아이디어명-prd.md` (예: `001-데일리셀프-prd.md`)
   - 해당 패턴의 파일이 없으면 사용자에게 정확한 파일명을 확인하고 중단한다.
 - **아래 섹션만 순서대로 읽는다.** PRD 전체를 읽지 않는다.
@@ -134,7 +134,7 @@
 - 형식:
   ```markdown
   ## PRD 참조
-  - **PRD 원문**: `~/app-idea-lab/ideas/adopted/NNN-아이디어명-prd.md`
+  - **PRD 원문**: `~/app-idea-lab-v2/ideas/adopted/NNN-아이디어명-prd.md`
   - 시스템 구조도: Section 7-2
   - 기능-테이블-API 매핑: Section 7-8
   - 상세 DB 스키마 (CREATE TABLE): Section 7-5
