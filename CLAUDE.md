@@ -8,7 +8,7 @@ app-idea-lab-v2에서 채택(adopted)된 PRD 문서를 기반으로, React Nativ
 
 ## 워크플로우
 ```
-/init-scaffold NNN-아이디어명 프로젝트명  →  프로젝트 생성 + 폴더 구조 + 의존성 설치
+/init-scaffold NNN-아이디어명 프로젝트명  →  프로젝트 생성 + 폴더 구조 + Supabase 초기화 + DB 마이그레이션 + EAS 설정 + 의존성 설치
 /init-docs NNN-아이디어명 프로젝트명      →  CLAUDE.md + KNOWLEDGE.md 생성 + Git 초기화
 ```
 
@@ -94,6 +94,7 @@ Expo Router 기반 React Native + Supabase 프로젝트의 기본 구조. init-s
 │   └── functions/             # Supabase Edge Functions
 ├── .env.example               # 환경변수 템플릿
 ├── .gitignore
+├── eas.json                   # EAS Build 프로파일 (dev/preview/prod)
 ├── CLAUDE.md                  # 프로젝트별 개발 지침 (init-docs가 생성)
 └── KNOWLEDGE.md               # 프로젝트별 도메인 지식 (init-docs가 생성)
 ```
