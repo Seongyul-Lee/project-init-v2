@@ -2,7 +2,7 @@
 
 # Project Init v2
 
-[app-idea-lab-v2](../app-idea-lab-v2)에서 채택된 PRD 문서를 기반으로, React Native + Supabase 프로젝트를 자동 생성하고 초기화하는 워크플로우 도구입니다.
+[app-idea-lab-v2](../app-idea-lab-v2)에서 채택된 PRD를 기반으로, Expo + Supabase 프로젝트를 자동 생성하고 개발 환경을 초기화하는 Claude Code 워크플로우 도구입니다. app-idea-lab-v2 파이프라인의 **Stage 4(채택) → MVP 개발** 사이에서 동작합니다.
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -28,6 +28,7 @@
 
 **하는 일:**
 - PRD를 읽고 필요한 폴더 구조 생성
+- Supabase 초기화 + DB 마이그레이션 + EAS Build 설정
 - 공통 + 조건부 의존성 설치
 - CLAUDE.md, KNOWLEDGE.md 등 개발 지침 문서 자동 생성
 - Git 초기화
@@ -189,12 +190,52 @@ claude
 
 실행 후 `~/medi-care/`에 개발 착수 가능한 프로젝트가 생성됩니다.
 
-### 생성되는 내용물
+### /init-scaffold 상세 단계
 
-| 단계 | 생성물 |
+| 순서 | 단계 | 설명 |
+|:---:|---|---|
+| 1 | Expo 프로젝트 생성 | `create-expo-app`으로 프로젝트 생성 |
+| 2 | 표준 폴더 구조 생성 | `src/app`, `src/components`, `src/hooks`, `src/stores` 등 |
+| 3 | Supabase 초기화 | `supabase init`으로 `supabase/` 디렉토리 구성 |
+| 4 | DB 마이그레이션 | PRD Section 7-5의 CREATE TABLE SQL로 마이그레이션 파일 생성 |
+| 5 | EAS Build 설정 | `eas.json` 프로파일 구성 (dev/preview/production) |
+| 6 | 의존성 설치 | 공통 의존성 + PRD Section 7-1 기반 조건부 의존성 설치 |
+
+### /init-docs 상세 단계
+
+| 순서 | 단계 | 설명 |
+|:---:|---|---|
+| 1 | CLAUDE.md 생성 | PRD에서 개발 지침 추출 (아래 매핑표 참조) |
+| 2 | KNOWLEDGE.md 생성 | PRD에서 도메인 지식 추출 (아래 매핑표 참조) |
+| 3 | 커맨드 복사 | `templates/commands/`의 `/next`, `/plan`을 새 프로젝트에 복사 |
+| 4 | Git 초기화 | `git init` + 초기 커밋 |
+
+**CLAUDE.md PRD 섹션 매핑:**
+
+| CLAUDE.md 섹션 | 추출 원본 (PRD Section) |
 |---|---|
-| `/init-scaffold` | 프로젝트 폴더 구조, Expo 프로젝트, 공통/조건부 패키지 설치 |
-| `/init-docs` | `CLAUDE.md` (개발 지침), `KNOWLEDGE.md` (도메인 지식), `.claude/commands/` (next, plan), Git 초기화 |
+| 프로젝트 개요 | Section 1 (Executive Summary) |
+| 기술 스택 | Section 7-1 |
+| 설계 원칙 | Section 7-4 |
+| 상태 관리 패턴 | Section 7-7 |
+| DB 규칙 | Section 7-5 |
+| API 규칙 | Section 7-6 |
+| 오프라인/동기화 규칙 | Section 7-3 |
+| 제약사항 | Section 12 |
+
+**KNOWLEDGE.md PRD 섹션 매핑:**
+
+| KNOWLEDGE.md 섹션 | 추출 원본 (PRD Section) |
+|---|---|
+| 비즈니스 컨텍스트 | Section 1, 2 |
+| 타겟 사용자 | Section 3 |
+| 핵심 기능 요약 | Section 5 |
+| 용어 사전 | Section 16 |
+| 수익 모델 | Section 10 |
+| 경쟁 포지셔닝 | Section 9 |
+| 성공 지표 | Section 15 |
+
+상세 골격은 [CLAUDE.md](./CLAUDE.md)의 "생성할 CLAUDE.md 골격" / "생성할 KNOWLEDGE.md 골격" 섹션을 참조해 주세요.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -240,15 +281,14 @@ claude
 │   └── assets/                # 정적 리소스
 ├── .claude/
 │   └── commands/              # /next, /plan 커맨드
-├── docs/
-│   └── plans/                 # 구현 계획 문서
 ├── supabase/
 │   ├── migrations/            # DB 마이그레이션 SQL
 │   └── functions/             # Edge Functions
 ├── .env.example
 ├── .gitignore
-├── CLAUDE.md                  # 프로젝트별 개발 지침
-└── KNOWLEDGE.md               # 프로젝트별 도메인 지식
+├── eas.json                   # EAS Build 프로파일 (dev/preview/production)
+├── CLAUDE.md                  # 프로젝트별 개발 지침 (init-docs가 생성)
+└── KNOWLEDGE.md               # 프로젝트별 도메인 지식 (init-docs가 생성)
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -258,14 +298,18 @@ claude
 ### 공통 의존성 (모든 프로젝트에 설치)
 
 ```bash
+# 필수 의존성
 npx expo install @supabase/supabase-js react-native-paper react-native-safe-area-context zustand react-native-mmkv react-native-nitro-modules expo-router expo-linking expo-constants @expo/metro-runtime react-native-screens react-native-reanimated react-native-gesture-handler expo-status-bar expo-splash-screen expo-secure-store expo-font expo-system-ui expo-dev-client
+
+# 개발 의존성
+npm install -D @types/react typescript
 ```
 
 ### 조건부 의존성 (PRD Section 7-1에 명시된 경우만)
 
 | 카테고리 | PRD 기술명 | 패키지 |
 |---|---|---|
-| 로컬 DB | op-sqlite | `@op-engineering/op-sqlite` |
+| 로컬 DB / 오프라인 | op-sqlite | `@op-engineering/op-sqlite` |
 | 인증 | Kakao OAuth | `@react-native-seoul/kakao-login` |
 | 인증 | Google OAuth | `@react-native-google-signin/google-signin` |
 | 인증 | Apple Auth | `expo-apple-authentication` |
@@ -275,20 +319,23 @@ npx expo install @supabase/supabase-js react-native-paper react-native-safe-area
 | 분석 | Aptabase | `@aptabase/react-native` |
 | 결제 | react-native-iap | `react-native-iap` |
 | 결제 | RevenueCat | `react-native-purchases` |
-| 차트 | Gifted Charts | `react-native-gifted-charts` + `react-native-svg` |
-| 차트 | Victory Native | `victory-native` + `@shopify/react-native-skia` |
-| UI | react-native-calendars | `react-native-calendars` |
-| UI | DateTimePicker | `@react-native-community/datetimepicker` |
-| 미디어 | expo-image-picker | `expo-image-picker` |
+| 차트 | Gifted Charts (SVG 기반) | `react-native-gifted-charts` + `react-native-svg` |
+| 차트 | Victory Native (Skia 기반) | `victory-native` + `@shopify/react-native-skia` |
+| UI 컴포넌트 | react-native-calendars | `react-native-calendars` |
+| UI 컴포넌트 | DateTimePicker | `@react-native-community/datetimepicker` |
+| UI 컴포넌트 | react-native-svg | `react-native-svg` |
+| 미디어 / 디바이스 | expo-image-picker | `expo-image-picker` |
+| 미디어 / 디바이스 | expo-camera | `expo-camera` |
+| 미디어 / 디바이스 | expo-haptics | `expo-haptics` |
 | 애니메이션 | Lottie | `lottie-react-native` |
 
-상세 피어 의존성 및 주의사항은 `CLAUDE.md`를 참조해 주세요.
+상세 피어 의존성, app.json plugin 설정, 주의사항은 [CLAUDE.md](./CLAUDE.md)를 참조해 주세요.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 개발 착수: TaskMaster-AI
 
-프로젝트 초기화 완료 후 실제 개발에 착수할 때는 **[TaskMaster-AI](https://github.com/eyaltoledano/claude-task-master)를 적극 활용하는 것을 강력히 권장합니다.** TaskMaster-AI는 PRD를 분석하여 개발 태스크를 자동으로 분해하고, 태스크 간 의존성과 우선순위를 관리해줍니다.
+프로젝트 초기화 완료 후 실제 개발에 착수할 때는 **[TaskMaster-AI](https://github.com/eyaltoledano/claude-task-master)를 적극 활용하는 것을 강력히 권장합니다.** PRD를 분석하여 개발 태스크를 자동 분해하고, 태스크 간 의존성과 우선순위를 관리해줍니다.
 
 ### TaskMaster-AI 설정
 
@@ -305,22 +352,18 @@ task-master parse-prd
 
 ### 개발 워크플로우
 
-TaskMaster-AI 설정 후 Claude Code에서 아래 사이클을 반복합니다:
+TaskMaster-AI 설정 후 Claude Code에서 아래 사이클을 반복합니다.
 
-```
-/next          → 다음 작업 확인 (TaskMaster-AI에서 조회)
-/plan [기능명]  → 구현 계획 수립 (PRD 참조 자동 추출 + Plan Mode)
-구현            → 코드 작성
-검증            → npx tsc --noEmit + lint
-완료            → Task Master 상태 업데이트
-```
+| 단계 | 커맨드/행동 | 설명 |
+|:---:|---|---|
+| 1 | `/next` | TaskMaster-AI에서 다음 작업 조회 |
+| 2 | `/plan [기능명]` 또는 `/plan id:N` | PRD 참조 자동 추출 + Plan Mode 진입 |
+| 3 | 구현 | 코드 작성 |
+| 4 | 검증 | `npx tsc --noEmit` + lint |
+| 5 | 완료 처리 | Task Master 상태 → done |
+| 6 | KNOWLEDGE.md 검토 | 업데이트 필요 여부 확인 |
 
-### TaskMaster-AI가 제공하는 가치
-
-- **PRD → 태스크 자동 분해**: 수십 개의 태스크를 수동으로 만들 필요가 없습니다
-- **의존성 관리**: 어떤 태스크를 먼저 해야 하는지 자동으로 결정합니다
-- **진행 상황 추적**: 전체 개발 진행률을 한눈에 파악할 수 있습니다
-- **컨텍스트 보존**: 각 태스크에 PRD 섹션 참조가 매핑되어 있어, `/plan` 실행 시 필요한 정보를 자동으로 가져옵니다
+> `/next`는 TaskMaster-AI MCP 서버가 연동되어 있어야 동작합니다. `/plan`은 `tasks.json`에서 관련 태스크를 조회한 뒤 PRD 섹션을 참조하여 Plan Mode로 진입합니다.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -342,7 +385,7 @@ app-idea-lab-v2 (출시/성장/월간 리뷰)
 
 ### 동기화 항목
 
-아래 항목이 app-idea-lab-v2에서 변경되면 본 프로젝트의 대응 섹션도 함께 수정해야 합니다.
+아래 항목이 app-idea-lab-v2에서 변경되면 본 프로젝트의 대응 섹션도 함께 수정해야 합니다. `/sync-check` 커맨드(app-idea-lab-v2)로 동기화 상태를 검증할 수 있습니다.
 
 | app-idea-lab-v2 | project-init-v2 |
 |---|---|
