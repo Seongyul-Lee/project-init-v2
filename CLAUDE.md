@@ -153,67 +153,67 @@ PRD Section 7-1에 아래 기술이 명시된 경우에만 추가 설치한다.
 
 ### 로컬 DB / 오프라인
 
-| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
-|---|---|---|---|
-| op-sqlite | `@op-engineering/op-sqlite` | — | dev build 필요. `expo-updates`와 SQLite 충돌 가능, 주의 |
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | app.json plugin | 비고 |
+|---|---|---|---|---|
+| op-sqlite | `@op-engineering/op-sqlite` | — | `@op-engineering/op-sqlite` | dev build 필요. `expo-updates`와 SQLite 충돌 가능, 주의 |
 
 ### 인증
 
-| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
-|---|---|---|---|
-| Kakao OAuth | `@react-native-seoul/kakao-login` | — | dev build 필요 |
-| Google OAuth | `@react-native-google-signin/google-signin` | — | Expo config plugin 내장. dev build 필요 |
-| Apple Auth | `expo-apple-authentication` | — | iOS 전용 |
-| Naver OAuth | `@react-native-seoul/naver-login` | — | dev build 필요 |
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | app.json plugin | 비고 |
+|---|---|---|---|---|
+| Kakao OAuth | `@react-native-seoul/kakao-login` | — | `@react-native-seoul/kakao-login` | dev build 필요 |
+| Google OAuth | `@react-native-google-signin/google-signin` | — | `@react-native-google-signin/google-signin` | Expo config plugin 내장. dev build 필요 |
+| Apple Auth | `expo-apple-authentication` | — | — | iOS 전용. Expo 자동 링크 |
+| Naver OAuth | `@react-native-seoul/naver-login` | — | `@react-native-seoul/naver-login` | dev build 필요 |
 
 ### 알림
 
-| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
-|---|---|---|---|
-| expo-notifications | `expo-notifications` | — | 푸시 기능은 dev build 필요 |
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | app.json plugin | 비고 |
+|---|---|---|---|---|
+| expo-notifications | `expo-notifications` | — | — | 푸시 기능은 dev build 필요. Expo 자동 링크 |
 
 ### 분석
 
-| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
-|---|---|---|---|
-| Firebase Analytics | `@react-native-firebase/analytics` | `@react-native-firebase/app` (동일 버전) | `expo-firebase-analytics`는 **폐기됨**. dev build 필요, app.json config plugin 설정 필요 |
-| Aptabase | `@aptabase/react-native` | — | 순수 JS. 최신 버전(v0.4+)은 React 19/RN 0.81+ 요구 — Expo SDK 버전에 맞는 호환 버전 확인 필요 |
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | app.json plugin | 비고 |
+|---|---|---|---|---|
+| Firebase Analytics | `@react-native-firebase/analytics` | `@react-native-firebase/app` (동일 버전) | `@react-native-firebase/app` | `expo-firebase-analytics`는 **폐기됨**. dev build 필요 |
+| Aptabase | `@aptabase/react-native` | — | — | 순수 JS. 최신 버전(v0.4+)은 React 19/RN 0.81+ 요구 — Expo SDK 버전에 맞는 호환 버전 확인 필요 |
 
 ### 결제
 
-| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
-|---|---|---|---|
-| react-native-iap | `react-native-iap` | `react-native-nitro-modules` | dev build 필요. Expo config plugin 내장 |
-| RevenueCat | `react-native-purchases` | — | IAP 래퍼. dev build 필요 |
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | app.json plugin | 비고 |
+|---|---|---|---|---|
+| react-native-iap | `react-native-iap` | `react-native-nitro-modules` | `react-native-iap` | dev build 필요. Expo config plugin 내장 |
+| RevenueCat | `react-native-purchases` | — | `react-native-purchases` | IAP 래퍼. dev build 필요 |
 
 ### 차트 / 시각화
 
-| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
-|---|---|---|---|
-| Gifted Charts (SVG 기반) | `react-native-gifted-charts` | `react-native-svg` | 그래디언트 사용 시 `expo-linear-gradient` 추가 |
-| Victory Native (Skia 기반) | `victory-native` | `@shopify/react-native-skia`, `react-native-reanimated`, `react-native-gesture-handler` | dev build 필요 |
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | app.json plugin | 비고 |
+|---|---|---|---|---|
+| Gifted Charts (SVG 기반) | `react-native-gifted-charts` | `react-native-svg` | — | 그래디언트 사용 시 `expo-linear-gradient` 추가 |
+| Victory Native (Skia 기반) | `victory-native` | `@shopify/react-native-skia`, `react-native-reanimated`, `react-native-gesture-handler` | — | dev build 필요 |
 
 ### UI 컴포넌트
 
-| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
-|---|---|---|---|
-| react-native-calendars | `react-native-calendars` | — | 주로 JS 기반 |
-| DateTimePicker | `@react-native-community/datetimepicker` | — | Expo 공식 지원, config plugin 내장 |
-| react-native-svg | `react-native-svg` | — | 차트/아이콘 라이브러리의 공통 피어 |
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | app.json plugin | 비고 |
+|---|---|---|---|---|
+| react-native-calendars | `react-native-calendars` | — | — | 주로 JS 기반 |
+| DateTimePicker | `@react-native-community/datetimepicker` | — | — | Expo 공식 지원, Expo 자동 링크 |
+| react-native-svg | `react-native-svg` | — | — | 차트/아이콘 라이브러리의 공통 피어 |
 
 ### 미디어 / 디바이스
 
-| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
-|---|---|---|---|
-| expo-image-picker | `expo-image-picker` | — | |
-| expo-camera | `expo-camera` | — | dev build 필요 |
-| expo-haptics | `expo-haptics` | — | |
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | app.json plugin | 비고 |
+|---|---|---|---|---|
+| expo-image-picker | `expo-image-picker` | — | — | Expo 자동 링크 |
+| expo-camera | `expo-camera` | — | — | dev build 필요. Expo 자동 링크 |
+| expo-haptics | `expo-haptics` | — | — | |
 
 ### 애니메이션
 
-| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | 비고 |
-|---|---|---|---|
-| Lottie | `lottie-react-native` | — | dev build 필요. `npx expo install`로 호환 버전 설치 |
+| PRD 기술명 | npm 패키지명 | 함께 설치할 피어 | app.json plugin | 비고 |
+|---|---|---|---|---|
+| Lottie | `lottie-react-native` | — | `lottie-react-native` | dev build 필요. `npx expo install`로 호환 버전 설치 |
 
 ---
 

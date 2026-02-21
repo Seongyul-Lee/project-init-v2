@@ -29,7 +29,7 @@
     - `sql` 코드 블록(```sql ... ```)을 모두 추출하여 순서대로 기록해둔다 (8단계에서 사용).
     - Section 7-5가 PRD에 없으면 기록해두고, Supabase 마이그레이션 단계(8단계 A)를 스킵한다.
 - 읽은 내용에서 CLAUDE.md의 "조건부 의존성 매핑" 테이블에 해당하는 기술을 식별한다.
-  - 식별된 기술 목록을 기록해둔다 (9단계에서 사용).
+  - 식별된 기술 목록을 기록해둔다 (7단계 A, 9단계에서 사용).
 - **미매핑 기술 감지**: Section 7-1에 언급된 모든 기술/라이브러리를 나열하고, CLAUDE.md의 "공통 의존성"과 "조건부 의존성 매핑" 테이블에 **모두 해당하지 않는** 기술이 있는지 확인한다.
   - 미매핑 기술이 발견되면 사용자에게 아래 형식으로 경고한다:
     ```
@@ -97,6 +97,41 @@
   - 예: "체크인" → `src/components/check-in/`, "리포트" → `src/components/report/`
 
 ### 7단계: 기본 파일 생성
+
+**A. app.json 수정**
+- `~/[프로젝트명]/app.json` 파일을 읽는다.
+  - 파일이 없으면 `⚠️ app.json을 찾을 수 없습니다. 스킵합니다.` 경고를 출력하고 B 항목으로 넘어간다.
+- 아래 필드를 추가/수정한다 (기존 값 보존):
+  - `expo.scheme` ← 프로젝트명 (kebab-case 그대로 사용)
+  - `expo.plugins` ← 기본 plugin 배열 + 2단계에서 식별된 조건부 plugin
+  - `expo.web.bundler` ← `"metro"`
+- **기본 plugins** (항상 포함):
+  - `"expo-router"`
+  - `"expo-secure-store"`
+- **조건부 plugins**: CLAUDE.md "조건부 의존성 매핑" 테이블의 "app.json plugin" 컬럼에 값이 있는(`—`가 아닌) 패키지 중, 2단계에서 식별된 것만 추가한다.
+- 예시 (프로젝트명이 `dailyself-app`이고 조건부 plugin이 없는 경우):
+  ```json
+  {
+    "expo": {
+      "scheme": "dailyself-app",
+      "plugins": [
+        "expo-router",
+        "expo-secure-store"
+      ],
+      "web": {
+        "bundler": "metro"
+      }
+    }
+  }
+  ```
+
+**B. package.json 수정**
+- `~/[프로젝트명]/package.json` 파일을 읽는다.
+  - 파일이 없으면 `⚠️ package.json을 찾을 수 없습니다. 스킵합니다.` 경고를 출력하고 다음 항목으로 넘어간다.
+- `"main"` 필드를 `"expo-router/entry"`로 설정한다.
+- 기존 내용을 보존한다.
+
+**C. 기본 소스 파일 생성**
 - **`src/services/supabase.ts`**: Supabase 클라이언트 초기화 코드를 작성한다.
   ```typescript
   import { createClient } from '@supabase/supabase-js';
@@ -118,17 +153,17 @@
     },
   });
   ```
-- **`.env.example`**:
+- **D. `.env.example`**:
   ```
   EXPO_PUBLIC_SUPABASE_URL=
   EXPO_PUBLIC_SUPABASE_ANON_KEY=
   ```
-- 기존 `.gitignore`에 아래 항목을 추가한다 (이미 있으면 생략):
+- **E.** 기존 `.gitignore`에 아래 항목을 추가한다 (이미 있으면 생략):
   ```
   .env
   .env.local
   ```
-- **커스텀 명령어 복사**: `~/project-init-v2/templates/commands/` 디렉토리의 파일을 프로젝트의 `.claude/commands/`로 복사한다.
+- **F. 커스텀 명령어 복사**: `~/project-init-v2/templates/commands/` 디렉토리의 파일을 프로젝트의 `.claude/commands/`로 복사한다.
   - `next.md` — Task Master 다음 작업 조회
   - `plan.md` — Plan Mode 진입 + 구현 계획 문서 생성
 
@@ -253,6 +288,7 @@
 
 🔧 Supabase: [초기화 완료 / 스킵됨 (사유)]
 🗃️ 마이그레이션: [생성 완료 (N개 테이블, N개 RLS, N개 Function) / 스킵됨 (Section 7-5 없음)]
+📱 app.json: [scheme, plugins, web.bundler 설정 완료 / 스킵됨 (사유)]
 📱 eas.json: [생성 완료 (development, preview, production) / 이미 존재하여 스킵]
 
 👉 다음 단계: /init-docs [NNN-아이디어명] [프로젝트명]
@@ -272,5 +308,7 @@
 | `npx supabase init` 실패 | 경고 출력 후 스킵. 나머지 scaffold 계속 진행 |
 | PRD Section 7-5 없음 | 마이그레이션 생성 스킵. 안내 메시지 출력 |
 | Section 7-5에 SQL 코드 블록 없음 | 마이그레이션 생성 스킵. 안내 메시지 출력 |
+| `app.json` 파일 미발견 | 경고 출력 후 스킵 |
+| `package.json` 파일 미발견 | 경고 출력 후 스킵 |
 | `eas.json` 이미 존재 | 스킵 (덮어쓰지 않음) |
 | 마이그레이션 파일 경로에 이미 파일 존재 | 사용자에게 덮어쓸지 확인 |
